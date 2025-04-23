@@ -1,0 +1,27 @@
+﻿services:
+  api:
+    build:
+      context: .            # pasta do projeto
+      dockerfile: Dockerfile
+    image: project-btg-pactual-api:latest
+    container_name: project-btg-pactual-api
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      # sobrescreve via env vars para garantir o host "rabbitmq"
+      RABBITMQ__Host: rabbitmq
+      RABBITMQ__Port: "5672"
+      RABBITMQ__Username: guest
+      RABBITMQ__Password: guest
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
