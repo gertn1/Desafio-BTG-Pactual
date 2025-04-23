@@ -1,39 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OrderMS.Data;
+﻿//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using OrderMS.Data;
 
-namespace OrderMS.Controllers;
-[ApiController]
-[Route("api")]
-public class OrdersController : ControllerBase
+//namespace OrderMS.Controllers;
+//[ApiController]
+//[Route("api")]
+//public class OrdersController : ControllerBase
+//{
+//    private readonly OrderDbContext _db;
+//    public OrdersController(OrderDbContext db) => _db = db;
+
+//    [HttpGet("orders/{orderId}/total")]
+//    public async Task<IActionResult> GetTotal(int orderId)
+//    {
+//        var total = await _db.Orders
+//            .Where(o => o.CodigoPedido == orderId)
+//            .Select(o => o.TotalValue)
+//            .FirstOrDefaultAsync();
+//        return Ok(new { orderId, total });
+//    }
+
+//    [HttpGet("clients/{clientId}/orders")]
+//    public async Task<IActionResult> GetByClient(int clientId)
+//    {
+//        var list = await _db.Orders
+//            .Where(o => o.ClientId == clientId)
+//            .Select(o => new { o.CodigoPedido, o.TotalValue, o.CreatedAt })
+//            .ToListAsync();
+//        return Ok(list);
+//    }
+
+//    [HttpGet("clients/{clientId}/orders/count")]
+//    public async Task<IActionResult> GetCount(int clientId)
+//    {
+//        var count = await _db.Orders.CountAsync(o => o.ClientId == clientId);
+//        return Ok(new { clientId, count });
+//    }
+//}
+
+
+using Microsoft.AspNetCore.Mvc;
+using OrderMS.Services;
+
+namespace OrderMS.Controllers
 {
-    private readonly OrderDbContext _db;
-    public OrdersController(OrderDbContext db) => _db = db;
-
-    [HttpGet("orders/{orderId}/total")]
-    public async Task<IActionResult> GetTotal(int orderId)
+    [ApiController]
+    [Route("api")]
+    public class OrdersController : ControllerBase
     {
-        var total = await _db.Orders
-            .Where(o => o.CodigoPedido == orderId)
-            .Select(o => o.TotalValue)
-            .FirstOrDefaultAsync();
-        return Ok(new { orderId, total });
-    }
+        private readonly IOrderService _service;
+        public OrdersController(IOrderService service) => _service = service;
 
-    [HttpGet("clients/{clientId}/orders")]
-    public async Task<IActionResult> GetByClient(int clientId)
-    {
-        var list = await _db.Orders
-            .Where(o => o.ClientId == clientId)
-            .Select(o => new { o.CodigoPedido, o.TotalValue, o.CreatedAt })
-            .ToListAsync();
-        return Ok(list);
-    }
+        [HttpGet("orders/{orderId}/total")]
+        public async Task<IActionResult> GetTotal(int orderId)
+        {
+            var total = await _service.GetTotalAsync(orderId);
+            return Ok(new { orderId, total });
+        }
 
-    [HttpGet("clients/{clientId}/orders/count")]
-    public async Task<IActionResult> GetCount(int clientId)
-    {
-        var count = await _db.Orders.CountAsync(o => o.ClientId == clientId);
-        return Ok(new { clientId, count });
+        [HttpGet("clients/{clientId}/orders")]
+        public async Task<IActionResult> GetByClient(int clientId)
+        {
+            var list = await _service.GetByClientAsync(clientId);
+            return Ok(list);
+        }
+
+        [HttpGet("clients/{clientId}/orders/count")]
+        public async Task<IActionResult> GetCount(int clientId)
+        {
+            var count = await _service.GetCountAsync(clientId);
+            return Ok(new { clientId, count });
+        }
     }
 }

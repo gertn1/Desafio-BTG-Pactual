@@ -45,8 +45,15 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderMS.Consumers;
 using OrderMS.Data;
+using OrderMS.Infra.Repositories;
+using OrderMS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// em Program.cs ou Startup.ConfigureServices:
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 
 // 1) Configurar DB
 builder.Services.AddDbContext<OrderDbContext>(opts =>
