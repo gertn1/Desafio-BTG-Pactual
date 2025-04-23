@@ -1,20 +1,15 @@
-﻿services:
-  api:
-    build:
-      context: .            # pasta do projeto
-      dockerfile: Dockerfile
-    image: project-btg-pactual-api:latest
-    container_name: project-btg-pactual-api
-    ports:
-      - "8080:8080"
-      - "8081:8081"
+﻿version: '3.8'
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      # sobrescreve via env vars para garantir o host "rabbitmq"
-      RABBITMQ__Host: rabbitmq
-      RABBITMQ__Port: "5672"
-      RABBITMQ__Username: guest
-      RABBITMQ__Password: guest
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_strong!Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -25,3 +20,26 @@
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: project-btg-pactual-api:latest
+    container_name: project-btg-pactual-api
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      RABBITMQ__Host: rabbitmq
+      RABBITMQ__Port: "5672"
+      RABBITMQ__Username: guest
+      RABBITMQ__Password: guest
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Initial Catalog=DesafioRabLocalDB;User Id=sa;Password=Your_strong!Passw0rd;TrustServerCertificate=True;"
+
+volumes:
+  sqlserverdata:

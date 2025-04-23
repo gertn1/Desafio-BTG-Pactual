@@ -12,7 +12,7 @@ using OrderMS.Data;
 namespace Project_BTG_Pactual_Api.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20250423142456_InitialCreate")]
+    [Migration("20250423161105_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

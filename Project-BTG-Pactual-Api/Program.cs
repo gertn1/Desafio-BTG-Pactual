@@ -78,12 +78,20 @@ builder.Services.AddMassTransit(x =>
 });
 builder.Services.AddMassTransitHostedService();
 
+
+
 // 3) MVC / Controllers / Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    db.Database.Migrate(); // aplica todas as migrations pendentes, criando DesafioRabLocalDB + esquema
+}
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
