@@ -22,12 +22,14 @@
         public Task<decimal> GetTotalValueAsync(int orderId) =>
             _db.Orders
                .Where(o => o.CodigoPedido == orderId)
+
                .Select(o => o.TotalValue)
                .FirstOrDefaultAsync();
 
         public Task<IReadOnlyList<Order>> GetByClientAsync(int clientId) =>
             _db.Orders
                .Where(o => o.ClientId == clientId)
+               .Include(o => o.Items)
                .ToListAsync()
                .ContinueWith(t => (IReadOnlyList<Order>)t.Result);
 

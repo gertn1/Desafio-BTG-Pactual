@@ -18,6 +18,7 @@
         {
             var order = new Order
             {
+
                 CodigoPedido = msg.CodigoPedido,
                 ClientId = msg.CodigoCliente,
                 CreatedAt = DateTime.UtcNow,
@@ -38,17 +39,24 @@
         public Task<decimal> GetTotalAsync(int orderId) =>
             _repo.GetTotalValueAsync(orderId);
 
-        public async Task<IReadOnlyList<ClientOrderDto>> GetByClientAsync(int clientId)
+        public async Task<IReadOnlyList<Order>> GetByClientAsync(int clientId)
         {
             var orders = await _repo.GetByClientAsync(clientId);
-            return orders
-                .Select(o => new ClientOrderDto
+
+            return orders.Select(o => new Order
+            {
+
+                CodigoPedido = o.CodigoPedido,
+                TotalValue = o.TotalValue,
+                CreatedAt = o.CreatedAt,
+                Items = o.Items.Select(i => new OrderItem
                 {
-                    CodigoPedido = o.CodigoPedido,
-                    TotalValue = o.TotalValue,
-                    CreatedAt = o.CreatedAt
-                })
-                .ToList();
+                    Product = i.Product,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice,
+                    //TotalItem = i.Quantity * i.UnitPrice
+                }).ToList()
+            }).ToList();
         }
 
         public Task<int> GetCountAsync(int clientId) =>

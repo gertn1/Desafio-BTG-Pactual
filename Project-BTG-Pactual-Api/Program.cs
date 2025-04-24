@@ -1,67 +1,22 @@
 
-
-//using MassTransit;
-//using Microsoft.EntityFrameworkCore;
-//using OrderMS.Consumers;
-//using OrderMS.Data;
-
-
-//var builder = WebApplication.CreateBuilder(args);
-
-//// Configurar DB
-//builder.Services.AddDbContext<OrderDbContext>(opts =>
-//    opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-//// Configurar MassTransit + RabbitMQ
-//builder.Services.AddMassTransit(x => {
-//    x.AddConsumer<OrderConsumer>();
-
-//    x.UsingRabbitMq((ctx, cfg) => {
-//        var rmq = builder.Configuration.GetSection("RabbitMQ");
-//        cfg.Host(rmq["Host"], h => {
-//            h.Username(rmq["Username"]);
-//            h.Password(rmq["Password"]);
-//        });
-//        cfg.ReceiveEndpoint(rmq["QueueName"], e => {
-//            e.ConfigureConsumer<OrderConsumer>(ctx);
-//        });
-//    });
-//});
-//builder.Services.AddMassTransitHostedService();
-
-//// MVC / Controllers / Swagger
-//builder.Services.AddControllers();
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
-//var app = builder.Build();
-//app.UseSwagger();
-//app.UseSwaggerUI();
-//app.MapControllers();
-//app.Run();
-
-
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using OrderMS.Consumers;
 using OrderMS.Infra.Repositories;
 using OrderMS.Services;
+using Project_BTG_Pactual_Api.Applicacao.Consumers;
 using Project_BTG_Pactual_Api.Applicacao.interfacesServices;
 using Project_BTG_Pactual_Api.Dominion.InterfacesRepositores;
 using Project_BTG_Pactual_Api.Infra.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// em Program.cs ou Startup.ConfigureServices:
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 
-// 1) Configurar DB
 builder.Services.AddDbContext<OrderDbContext>(opts =>
     opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2) Configurar MassTransit + RabbitMQ
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<OrderConsumer>();
@@ -69,7 +24,6 @@ builder.Services.AddMassTransit(x =>
     x.UsingRabbitMq((ctx, cfg) =>
     {
         var rmq = builder.Configuration.GetSection("RabbitMQ");
-        // lê host e porta (porta opcional, default 5672)
         var host = rmq["Host"] ?? "rabbitmq";
         var port = int.TryParse(rmq["Port"], out var p) ? p : 5672;
 
@@ -89,7 +43,6 @@ builder.Services.AddMassTransitHostedService();
 
 
 
-// 3) MVC / Controllers / Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -99,7 +52,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
-    db.Database.Migrate(); // aplica todas as migrations pendentes, criando DesafioRabLocalDB + esquema
+    db.Database.Migrate(); 
 }
 app.UseSwagger();
 app.UseSwaggerUI();
