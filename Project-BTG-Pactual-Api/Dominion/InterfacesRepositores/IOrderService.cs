@@ -1,8 +1,8 @@
-﻿namespace OrderMS.Infra.Repositories
+﻿namespace Project_BTG_Pactual_Api.Dominion.InterfacesRepositores
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Project_BTG_Pactual_Api.Entities;
+    using Project_BTG_Pactual_Api.Dominion.Entities;
 
     public interface IOrderRepository
     {

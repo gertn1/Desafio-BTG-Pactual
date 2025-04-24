@@ -3,9 +3,9 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using OrderMS.Infra.Repositories;
     using OrderMS.Services.DTOs;
-    using Project_BTG_Pactual_Api.Entities;
+    using Project_BTG_Pactual_Api.Dominion.Entities;
+    using Project_BTG_Pactual_Api.Dominion.InterfacesRepositores;
     using Project_BTG_Pactual_Api.Messages;
 
     public class OrderService : IOrderService

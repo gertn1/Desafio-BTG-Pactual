@@ -4,8 +4,9 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using OrderMS.Data;
-    using Project_BTG_Pactual_Api.Entities;
+    using Project_BTG_Pactual_Api.Dominion.Entities;
+    using Project_BTG_Pactual_Api.Dominion.InterfacesRepositores;
+    using Project_BTG_Pactual_Api.Infra.Data;
 
     public class OrderRepository : IOrderRepository
     {

@@ -44,9 +44,10 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderMS.Consumers;
-using OrderMS.Data;
 using OrderMS.Infra.Repositories;
 using OrderMS.Services;
+using Project_BTG_Pactual_Api.Dominion.InterfacesRepositores;
+using Project_BTG_Pactual_Api.Infra.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

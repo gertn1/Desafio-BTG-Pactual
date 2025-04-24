@@ -1,4 +1,4 @@
-﻿namespace Project_BTG_Pactual_Api.Entities
+﻿namespace Project_BTG_Pactual_Api.Dominion.Entities
 {
 
     public class Order
