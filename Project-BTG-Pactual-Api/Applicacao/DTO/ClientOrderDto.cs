@@ -1,4 +1,4 @@
-﻿namespace OrderMS.Services.DTOs
+﻿namespace Project_BTG_Pactual_Api.Applicacao.DTO
 {
     using System;
 

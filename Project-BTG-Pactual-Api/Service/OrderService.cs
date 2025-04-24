@@ -3,7 +3,8 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using OrderMS.Services.DTOs;
+    using Project_BTG_Pactual_Api.Applicacao.DTO;
+    using Project_BTG_Pactual_Api.Applicacao.interfacesServices;
     using Project_BTG_Pactual_Api.Dominion.Entities;
     using Project_BTG_Pactual_Api.Dominion.InterfacesRepositores;
     using Project_BTG_Pactual_Api.Messages;

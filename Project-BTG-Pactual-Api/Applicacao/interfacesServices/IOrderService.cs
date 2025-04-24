@@ -1,8 +1,8 @@
-﻿namespace OrderMS.Services
+﻿namespace Project_BTG_Pactual_Api.Applicacao.interfacesServices
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using OrderMS.Services.DTOs;
+    using Project_BTG_Pactual_Api.Applicacao.DTO;
     using Project_BTG_Pactual_Api.Messages;
 
     public interface IOrderService

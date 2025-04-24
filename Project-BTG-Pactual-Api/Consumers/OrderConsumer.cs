@@ -36,7 +36,7 @@
 
 using MassTransit;
 using Project_BTG_Pactual_Api.Messages;
-using OrderMS.Services;
+using Project_BTG_Pactual_Api.Applicacao.interfacesServices;
 
 namespace OrderMS.Consumers
 {

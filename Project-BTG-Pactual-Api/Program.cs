@@ -46,6 +46,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderMS.Consumers;
 using OrderMS.Infra.Repositories;
 using OrderMS.Services;
+using Project_BTG_Pactual_Api.Applicacao.interfacesServices;
 using Project_BTG_Pactual_Api.Dominion.InterfacesRepositores;
 using Project_BTG_Pactual_Api.Infra.Data;
 
